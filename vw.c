@@ -23,7 +23,7 @@
 const char *texts[NUM_EXAMPLES] = {
     "This is some english text",
     "هذه هي بعض النصوص العربي",
-    "這是一些中文",
+    "這，是一些中文",
 };
 
 const int text_directions[NUM_EXAMPLES] = {
@@ -37,7 +37,7 @@ const int text_directions[NUM_EXAMPLES] = {
 const char *languages[NUM_EXAMPLES] = {
     "en",
     "ar",
-    "ch",
+    "zh-TW",
 };
 
 const hb_script_t scripts[NUM_EXAMPLES] = {
@@ -50,8 +50,35 @@ enum {
     ENGLISH=0, ARABIC, CHINESE
 };
 
+enum {
+    COLOR_RED=0, COLOR_GREEN, COLOR_BLUE, COLOR_PURPLE,COLOR_WHITE
+};
 
-int main () {
+void marking(cairo_t *cr,double x, double y, int color)
+{
+    double ux=1, uy=1;
+    cairo_device_to_user_distance (cr, &ux, &uy);
+    double u = ux < uy ? uy : ux;
+    u = u * 5.0;
+    switch( color )
+    {
+        case COLOR_RED: cairo_set_source_rgba (cr, 1.0, 0.0, 0.0, 1.0);break;
+        case COLOR_GREEN: cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 1.0);break;
+        case COLOR_BLUE: cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 1.0);break;
+        case COLOR_PURPLE: cairo_set_source_rgba (cr, 0.0, 1.0, 1.0, 1.0);break;
+        case COLOR_WHITE:
+        default: cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 1.0);break;
+    }
+
+    cairo_set_line_width (cr, ux);
+    cairo_move_to(cr,x-u ,y);
+    cairo_line_to(cr,x+u ,y);
+    cairo_move_to(cr,x   ,y-u);
+    cairo_line_to(cr,x   ,y+u);
+    cairo_stroke (cr);
+}
+
+int main (int argc,char **argv) {
     double ptSize      = 50.0;
     int    device_hdpi = 100;
     int    device_vdpi = 100;
@@ -67,7 +94,8 @@ int main () {
     //assert(!FT_New_Face(ft_library, "fonts/lateef.ttf", 0, &ft_face[ARABIC]));
     assert(!FT_New_Face(ft_library, "fonts/amiri-0.104/amiri-regular.ttf", 0, &ft_face[ARABIC]));
     assert(!FT_Set_Char_Size(ft_face[ARABIC], 0, ptSize, device_hdpi, device_vdpi ));
-    assert(!FT_New_Face(ft_library, "fonts/fireflysung-1.3.0/fireflysung.ttf", 0, &ft_face[CHINESE]));
+    const char *fontpath = "fonts/fireflysung-1.3.0/fireflysung.ttf";
+    assert(!FT_New_Face(ft_library, argc > 1 ? argv[1] : fontpath, 0, &ft_face[CHINESE]));
     assert(!FT_Set_Char_Size(ft_face[CHINESE], 0, ptSize, device_hdpi, device_vdpi ));
 
     /* Get our cairo font structs */
@@ -177,8 +205,11 @@ int main () {
                 cairo_glyphs[j].index = glyph_info[j].codepoint;
                 cairo_glyphs[j].x = x + (glyph_pos[j].x_offset/64);
                 cairo_glyphs[j].y = y - (glyph_pos[j].y_offset/64);
+                marking( cr, x, y, COLOR_WHITE);
+                marking( cr, cairo_glyphs[j].x, cairo_glyphs[j].y, COLOR_RED);
                 x += glyph_pos[j].x_advance/64;
                 y -= glyph_pos[j].y_advance/64;
+
             }
 
             cairo_set_source_rgba (cr, 0.5, 0.5, 0.5, 1.0);
