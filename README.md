@@ -7,4 +7,4 @@ window to display stuff in.
 Screenshot
 ==========
 
-![Screenshot](https://github.com/anoek/ex-sdl-cairo-freetype-harfbuzz/raw/master/screenshot.png)
+![Screenshot](https://github.com/marklh9/ex-sdl-cairo-freetype-harfbuzz/raw/master/screenshot.png)
