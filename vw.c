@@ -165,20 +165,20 @@ int main () {
             cairo_glyph_t       *cairo_glyphs = malloc(sizeof(cairo_glyph_t) * glyph_count);
 
             unsigned int string_width_in_pixels = 0;
-            for (int i=0; i < glyph_count; ++i) {
-                string_width_in_pixels += glyph_pos[i].x_advance/64;
+            for (int j=0; j < glyph_count; ++j) {
+                string_width_in_pixels += glyph_pos[j].x_advance/64;
             }
 
             if (i == ENGLISH) { x = 20; }                                   /* left justify */
             if (i == ARABIC)  { x = width - string_width_in_pixels -20; }   /* right justify */
             if (i == CHINESE) { x = width/2 - string_width_in_pixels/2; }   /* center */
 
-            for (int i=0; i < glyph_count; ++i) {
-                cairo_glyphs[i].index = glyph_info[i].codepoint;
-                cairo_glyphs[i].x = x + (glyph_pos[i].x_offset/64);
-                cairo_glyphs[i].y = y - (glyph_pos[i].y_offset/64);
-                x += glyph_pos[i].x_advance/64;
-                y -= glyph_pos[i].y_advance/64;
+            for (int j=0; j < glyph_count; ++j) {
+                cairo_glyphs[j].index = glyph_info[j].codepoint;
+                cairo_glyphs[j].x = x + (glyph_pos[j].x_offset/64);
+                cairo_glyphs[j].y = y - (glyph_pos[j].y_offset/64);
+                x += glyph_pos[j].x_advance/64;
+                y -= glyph_pos[j].y_advance/64;
             }
 
             cairo_set_source_rgba (cr, 0.5, 0.5, 0.5, 1.0);
