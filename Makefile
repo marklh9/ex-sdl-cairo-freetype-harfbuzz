@@ -3,9 +3,9 @@ CFLAGS=--std=c99 -g -O2 -Wall --pedantic `freetype-config --cflags` `sdl-config 
 LDFLAGS=`icu-config --ldflags`
 LIBS=-lcairo -lharfbuzz -lharfbuzz-icu `freetype-config --libs` `sdl-config --libs`
 
-all: ex-sdl-cairo-freetype-harfbuzz
+all: vw
 
-ex-sdl-cairo-freetype-harfbuzz: ex-sdl-cairo-freetype-harfbuzz.c
+vw: vw.c
 	$(CC) $< $(CFLAGS) -o $@ $(LDFLAGS) $(LIBS)
 
 clean:
