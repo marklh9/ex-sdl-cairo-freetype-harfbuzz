@@ -65,7 +65,7 @@ void marking(cairo_t *cr,double x, double y, int color)
         case COLOR_RED: cairo_set_source_rgba (cr, 1.0, 0.0, 0.0, 1.0);break;
         case COLOR_GREEN: cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 1.0);break;
         case COLOR_BLUE: cairo_set_source_rgba (cr, 0.0, 0.0, 1.0, 1.0);break;
-        case COLOR_PURPLE: cairo_set_source_rgba (cr, 0.0, 1.0, 1.0, 1.0);break;
+        case COLOR_PURPLE: cairo_set_source_rgba (cr, 1.0, 0.0, 1.0, 1.0);break;
         case COLOR_WHITE:
         default: cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 1.0);break;
     }
