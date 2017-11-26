@@ -54,6 +54,20 @@ enum {
     COLOR_RED=0, COLOR_GREEN, COLOR_BLUE, COLOR_PURPLE,COLOR_WHITE
 };
 
+void hline(cairo_t *cr,double x, double y)
+{
+    double ux=1, uy=1;
+    cairo_device_to_user_distance (cr, &ux, &uy);
+    double u = ux < uy ? uy : ux;
+    u = u * 100.0;
+    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 1.0);
+    cairo_set_line_width (cr, ux);
+    cairo_move_to(cr,x-u ,y);
+    cairo_line_to(cr,x+u ,y);
+    cairo_stroke (cr);
+}
+
+
 void marking(cairo_t *cr,double x, double y, int color)
 {
     double ux=1, uy=1;
@@ -201,6 +215,7 @@ int main (int argc,char **argv) {
             if (i == ARABIC)  { x = width - string_width_in_pixels -20; }   /* right justify */
             if (i == CHINESE) { x = width/2 - string_width_in_pixels/2; }   /* center */
 
+            hline(cr,x,y);
             for (int j=0; j < glyph_count; ++j) {
                 cairo_glyphs[j].index = glyph_info[j].codepoint;
                 cairo_glyphs[j].x = x + (glyph_pos[j].x_offset/64);
